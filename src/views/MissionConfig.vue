@@ -314,7 +314,7 @@ async function submit_form(formEl: FormInstance | undefined) {
             submit_to_backend()
               .then((submit_res) => {
                 if (submit_res.code === 200) {
-                  route.query.mode === 'add'
+                  route.query.mode === 'add' || route.query.mode === 'drop'
                     ? missionStore.append_new_mission(submit_res.data)
                     : missionStore.edit_mission(form.id, submit_res.data)
                   router.push('/table')
@@ -438,7 +438,7 @@ async function submit_to_backend() {
 
   // configuration.cron_expression = configuration.cron_expression.replace("?", "*");
   let data: any
-  if (route.query.mode === 'add')
+  if (route.query.mode === 'add' || route.query.mode === 'drop')
     data = await execute_rust_command(TauriCommand.COMMAND_CREATE_MISSION, configuration)
   else if (route.query.mode === 'edit')
     data = await execute_rust_command(TauriCommand.COMMAND_EDIT_MISSION, form.id, configuration)
